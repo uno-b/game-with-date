@@ -83,16 +83,36 @@ function App() {
     const unoAnswers = [];
     const ukaAnswers = [];
 
+    // Collect answers for uno and uka
     for (const fact of unoFacts) {
-      ukaAnswers.push(fact.name);
-    }
-
-    for (const fact of ukaFacts) {
       unoAnswers.push(fact.name);
     }
 
-    setAnswersForUno(unoAnswers);
-    setAnswersForUka(ukaAnswers);
+    for (const fact of ukaFacts) {
+      ukaAnswers.push(fact.name);
+    }
+
+    // Combine all answers into a single array
+    const allAnswers = [...unoAnswers, ...ukaAnswers];
+
+    // Shuffle the combined array
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    const shuffledAnswers = shuffleArray(allAnswers);
+
+    // Set the shuffled answers
+    setAnswersForUno(
+      shuffledAnswers.filter((answer) => unoAnswers.includes(answer))
+    );
+    setAnswersForUka(
+      shuffledAnswers.filter((answer) => ukaAnswers.includes(answer))
+    );
   };
 
   const endGame = () => {
